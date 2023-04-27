@@ -6,9 +6,10 @@ services:
       - "3100:3000"
     volumes:
       - ./db:/app/db
-    environment:
-      - NODE_ENV=production
-      - NEXTAUTH_SECRET=jbIwa7c7tEbzfPTAP/TOx00dE3fECHCV/Kd3UEQnm7c=
-      - NEXTAUTH_URL=http://localhost:3000
-      - OPENAI_API_KEY=###
-      - DATABASE_URL=file:../db/db.sqlite
+      - ./.env:/app/.env
+    #environment:
+    #  - NODE_ENV=production
+    #  - NEXTAUTH_SECRET=jbIwa7c7tEbzfPTAP/TOx00dE3fECHCV/Kd3UEQnm7c=
+    #  - NEXTAUTH_URL=http://localhost:3000
+    #  - OPENAI_API_KEY=###
+    #  - DATABASE_URL=file:../db/db.sqlite
