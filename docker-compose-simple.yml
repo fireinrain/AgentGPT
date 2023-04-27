@@ -3,7 +3,7 @@ services:
   autogpt:
     image: liuzy/agent-gpt:latest
     ports:
-      - "3000:3000"
+      - "3100:3000"
     volumes:
       - ./db:/app/db
     environment:
