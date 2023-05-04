@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { ModelSettings, SettingModel } from "../utils/types";
+
 import {
   DEFAULT_MAX_LOOPS_CUSTOM_API_KEY,
   DEFAULT_MAX_LOOPS_FREE,
@@ -16,33 +17,39 @@ const DEFAULT_SETTINGS: ModelSettings = {
 };
 
 const loadSettings = () => {
+  const settings = { ...DEFAULT_SETTINGS };
+
   if (typeof window === "undefined") {
-    return DEFAULT_SETTINGS;
+    return settings;
   }
 
   const data = localStorage.getItem(SETTINGS_KEY);
   if (!data) {
-    return DEFAULT_SETTINGS;
+    return settings;
   }
 
   try {
     const obj = JSON.parse(data) as ModelSettings;
     Object.entries(obj).forEach(([key, value]) => {
-      if (DEFAULT_SETTINGS.hasOwnProperty(key)) {
+      if (settings.hasOwnProperty(key)) {
         // @ts-ignore
-        DEFAULT_SETTINGS[key] = value;
+        settings[key] = value;
       }
     });
   } catch (error) {}
 
-  if (
-    DEFAULT_SETTINGS.customApiKey &&
-    DEFAULT_SETTINGS.customMaxLoops === DEFAULT_MAX_LOOPS_FREE
-  ) {
-    DEFAULT_SETTINGS.customMaxLoops = DEFAULT_MAX_LOOPS_CUSTOM_API_KEY;
+  if (!settings.customApiKey) {
+    return { ...DEFAULT_SETTINGS };
   }
 
-  return DEFAULT_SETTINGS;
+  if (
+    settings.customApiKey &&
+    settings.customMaxLoops === DEFAULT_MAX_LOOPS_FREE
+  ) {
+    settings.customMaxLoops = DEFAULT_MAX_LOOPS_CUSTOM_API_KEY;
+  }
+
+  return settings;
 };
 
 export function useSettings(): SettingModel {
